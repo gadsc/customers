@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customers_test
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  jackson:
+    default-property-inclusion: NON_EMPTY
+    property-naming-strategy: SNAKE_CASE
+    serialization.indent-output: true
+    serialization.write-dates-as-timestamps: false
+    mapper.accept-case-insensitive-enums: true
+
+aws:
+  enabled: false
+  region: us-east-1
+
+management:
+  endpoints:
+    web:
+      base-path: /
+
+cloud:
+  aws:
+    region:
+      static: us-east-1
+    stack:
+      auto: false

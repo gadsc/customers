@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: customers
+aws:
+  paramstore:
+    name: customers
+    enabled: false
