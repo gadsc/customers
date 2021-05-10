@@ -1,0 +1,40 @@
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Compiled class file and paths
+*.class
+/out
+/**/out
+/build
+/**/build
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### Application
+src/main/resources/application.yaml
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### Terraform ###
+*.tfplan
+.terraform
