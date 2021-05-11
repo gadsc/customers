@@ -12,9 +12,17 @@ class CustomerService(private val customerRepository: CustomerRepository) {
 
     fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw RuntimeException("Customer not found")
 
-    fun delete(customer: Customer) = customerRepository.delete(customer)
+    fun delete(id: UUID) {
+        val customerToDelete = customerRepository.findByIdOrNull(id)  ?: throw RuntimeException("Customer not found")
+
+        customerRepository.save(customerToDelete.logicalDelete())
+    }
 
     fun findAll() = customerRepository.findAll()
 
-    fun update(customer: Customer) = customerRepository.save(customer)
+    fun update(id: UUID, customer: Customer): Customer {
+        val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw RuntimeException("Customer not found")
+
+        return customerRepository.save(customerToUpdate.update(customer))
+    }
 }

@@ -16,16 +16,16 @@ class CustomerDTO(
     @JsonProperty("email")
     val email: String,
     @JsonProperty("job_title")
-    var jobTitle: String,
+    val jobTitle: String?,
     @JsonProperty("civil_status")
     @Enumerated(EnumType.STRING)
     val civilStatus: CivilStatus,
     @JsonProperty("birthdate")
     val birthdate: LocalDate,
     @JsonProperty("mother_full_name")
-    var motherFullName: String?,
+    val motherFullName: String?,
     @JsonProperty("father_full_name")
-    var fatherFullName: String?,
+    val fatherFullName: String?,
     @JsonProperty("politically_exposed")
     val politicallyExposed: Boolean?,
     @JsonProperty("phones")
@@ -33,7 +33,7 @@ class CustomerDTO(
     @JsonProperty("addresses")
     val addresses: Set<AddressDTO>,
     @JsonProperty("naturalness")
-    var naturalness: NaturalnessDTO?,
+    val naturalness: NaturalnessDTO?,
     @JsonProperty("main_document")
     val mainDocument: MainDocumentDTO
 ) {

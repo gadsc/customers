@@ -27,5 +27,10 @@ class CustomerController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun update(@PathVariable("id") id: UUID, @RequestBody customer: CustomerDTO) =
-        customerService.update(customer.toDomain())
+        customerService.update(id, customer.toDomain())
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun delete(@PathVariable("id") id: UUID) =
+        customerService.delete(id)
 }

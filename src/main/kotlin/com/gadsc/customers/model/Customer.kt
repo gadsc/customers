@@ -1,5 +1,9 @@
 package com.gadsc.customers.model
 
+import com.gadsc.customers.dto.AddressDTO
+import com.gadsc.customers.dto.MainDocumentDTO
+import com.gadsc.customers.dto.NaturalnessDTO
+import com.gadsc.customers.dto.PhoneDTO
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -16,24 +20,24 @@ class Customer(
     @Column(name = "email", nullable = false)
     val email: String,
     @Column(name = "job_title")
-    var jobTitle: String,
+    val jobTitle: String?,
     @Column(name = "civil_status")
     @Enumerated(EnumType.STRING)
     val civilStatus: CivilStatus,
     @Column(name = "birthdate")
     val birthdate: LocalDate,
     @Column(name = "mother_full_name")
-    var motherFullName: String?,
+    val motherFullName: String?,
     @Column(name = "father_full_name")
-    var fatherFullName: String?,
+    val fatherFullName: String?,
     @Column(name = "politically_exposed")
     val politicallyExposed: Boolean?,
     @Column(name = "created_at")
-    val createdAt: LocalDate = LocalDate.now(),
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "updated_at")
-    var updatedAt: LocalDate = LocalDate.now(),
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "deleted_at")
-    var deletedAt: LocalDateTime? = null,
+    val deletedAt: LocalDateTime? = null,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "customer_id")
     val phones: Set<Phone> = emptySet(),
@@ -44,4 +48,41 @@ class Customer(
     var naturalness: Naturalness?,
     @Embedded
     val mainDocument: MainDocument
-)
+) {
+    fun update(customer: Customer): Customer = Customer(
+        id = this.id,
+        name = customer.name,
+        email = customer.email,
+        jobTitle = customer.jobTitle,
+        civilStatus = customer.civilStatus,
+        birthdate = customer.birthdate,
+        motherFullName = customer.motherFullName,
+        fatherFullName = customer.fatherFullName,
+        politicallyExposed = customer.politicallyExposed,
+        createdAt = this.createdAt,
+        updatedAt = LocalDateTime.now(),
+        phones = this.phones + customer.phones,
+        addresses = this.addresses + customer.addresses,
+        naturalness = customer.naturalness,
+        mainDocument = customer.mainDocument
+    )
+
+    fun logicalDelete(): Customer = Customer(
+        id = this.id,
+        name = this.name,
+        email = this.email,
+        jobTitle = this.jobTitle,
+        civilStatus = this.civilStatus,
+        birthdate = this.birthdate,
+        motherFullName = this.motherFullName,
+        fatherFullName = this.fatherFullName,
+        politicallyExposed = this.politicallyExposed,
+        createdAt = this.createdAt,
+        updatedAt = LocalDateTime.now(),
+        deletedAt = LocalDateTime.now(),
+        phones = this.phones,
+        addresses = this.addresses,
+        naturalness = this.naturalness,
+        mainDocument = this.mainDocument
+    )
+}

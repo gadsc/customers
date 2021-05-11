@@ -8,7 +8,7 @@ class MainDocumentDTO(
     @JsonProperty("main_document_type")
     val mainDocumentType: String,
 
-    @JsonProperty("main_document_type")
+    @JsonProperty("code")
     val code: String
 ) {
     companion object {

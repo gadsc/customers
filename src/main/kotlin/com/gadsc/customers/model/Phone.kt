@@ -15,4 +15,20 @@ class Phone(
 
     @Column(name = "type")
     val type: String
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Phone) return false
+
+        if (number != other.number) return false
+        if (type != other.type) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = number.hashCode()
+        result = 31 * result + type.hashCode()
+        return result
+    }
+}
