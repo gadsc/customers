@@ -28,9 +28,4 @@ class CustomerController(
     @ResponseStatus(HttpStatus.OK)
     fun update(@PathVariable("id") id: UUID, @RequestBody customer: Customer) =
         customerService.update(customer)
-
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun partialUpdate(@PathVariable("id") id: UUID, @RequestBody customer: Customer) =
-        customerService.update(customer)
 }

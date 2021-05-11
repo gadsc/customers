@@ -34,13 +34,14 @@ class Customer(
     var updatedAt: LocalDate = LocalDate.now(),
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null,
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "customer_phones", joinColumns = [JoinColumn(name = "customer_id")])
-    val phones: MutableSet<Phone>,
-    @Embedded
-    val address: Address,
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "customer_id")
+    val phones: Set<Phone> = emptySet(),
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "customer_id")
+    val addresses: Set<Address> = emptySet(),
     @Embedded
     var naturalness: Naturalness?,
     @Embedded
-    val identificationDocument: IdentificationDocument
+    val mainDocument: MainDocument
 )

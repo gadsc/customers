@@ -1,17 +1,20 @@
 package com.gadsc.customers.model
 
-import javax.persistence.Column
-import javax.persistence.Embeddable
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
+import java.util.*
+import javax.persistence.*
 
-@Embeddable
+@Entity
+@Table(name = "customer_phones")
 class Phone(
-    @Column(name = "number", nullable = false)
+    @Id
+    @GeneratedValue
+    val id: UUID? = null,
+
+    @Column(name = "number")
     val number: String,
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    val type: CustomerPhoneType
+
+    @Column(name = "phone_type")
+    val phoneType: String
 )
 
 enum class CustomerPhoneType {
