@@ -8,6 +8,6 @@ class MainDocument(
     @Column(name = "main_document_type")
     val mainDocumentType: String,
 
-    @Column(name = "main_document_type")
+    @Column(name = "code")
     val code: String
 )
