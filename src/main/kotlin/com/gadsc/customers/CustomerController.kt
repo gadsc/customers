@@ -1,6 +1,6 @@
 package com.gadsc.customers
 
-import com.gadsc.customers.model.Customer
+import com.gadsc.customers.dto.CustomerDTO
 import com.gadsc.customers.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -13,19 +13,19 @@ class CustomerController(
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody customer: Customer) = customerService.create(customer)
+    fun create(@RequestBody customer: CustomerDTO) = customerService.create(customer.toDomain())
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAll() = customerService.findAll()
+    fun findAll() = customerService.findAll().map { CustomerDTO.fromDomain(it) }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun findById(@PathVariable("id") id: UUID) =
-        customerService.findById(id) ?: throw RuntimeException("Customer not found")
+    fun findById(@PathVariable("id") id: UUID): CustomerDTO =
+        CustomerDTO.fromDomain(customerService.findById(id))
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun update(@PathVariable("id") id: UUID, @RequestBody customer: Customer) =
-        customerService.update(customer)
+    fun update(@PathVariable("id") id: UUID, @RequestBody customer: CustomerDTO) =
+        customerService.update(customer.toDomain())
 }

@@ -1,7 +1,10 @@
 package com.gadsc.customers.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.gadsc.customers.model.Address
 import com.gadsc.customers.model.CivilStatus
+import com.gadsc.customers.model.Customer
+import com.gadsc.customers.model.Phone
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -25,18 +28,44 @@ class CustomerDTO(
     var fatherFullName: String?,
     @JsonProperty("politically_exposed")
     val politicallyExposed: Boolean?,
-    @JsonProperty("created_at")
-    val createdAt: LocalDate = LocalDate.now(),
-    @JsonProperty("updated_at")
-    var updatedAt: LocalDate = LocalDate.now(),
-    @JsonProperty("deleted_at")
-    var deletedAt: LocalDateTime? = null,
+    @JsonProperty("phones")
+    val phones: Set<PhoneDTO>,
+    @JsonProperty("addresses")
+    val addresses: Set<AddressDTO>,
+    @JsonProperty("naturalness")
+    var naturalness: NaturalnessDTO?,
+    @JsonProperty("main_document")
+    val mainDocument: MainDocumentDTO
+) {
+    companion object {
+        fun fromDomain(customer: Customer): CustomerDTO = CustomerDTO(
+            name = customer.name,
+            email = customer.email,
+            jobTitle = customer.jobTitle,
+            civilStatus = customer.civilStatus,
+            birthdate = customer.birthdate,
+            motherFullName = customer.motherFullName,
+            fatherFullName = customer.fatherFullName,
+            politicallyExposed = customer.politicallyExposed,
+            phones = customer.phones.map { PhoneDTO.fromDomain(it) }.toSet(),
+            addresses = customer.addresses.map { AddressDTO.fromDomain(it) }.toSet(),
+            naturalness = if (customer.naturalness != null) NaturalnessDTO.fromDomain(customer.naturalness!!) else null,
+            mainDocument = MainDocumentDTO.fromDomain(customer.mainDocument)
+        )
+    }
 
-    val phones: MutableSet<Phone>,
-
-    val addressDTO: AddressDTO,
-
-    var naturalnessDTO: NaturalnessDTO?,
-
-    val identificationDocument: IdentificationDocument
-)
+    fun toDomain(): Customer = Customer(
+        name = this.name,
+        email = this.email,
+        jobTitle = this.jobTitle,
+        civilStatus = this.civilStatus,
+        birthdate = this.birthdate,
+        motherFullName = this.motherFullName,
+        fatherFullName = this.fatherFullName,
+        politicallyExposed = this.politicallyExposed,
+        phones = this.phones.map { it.toDomain() }.toSet(),
+        addresses = this.addresses.map { it.toDomain() }.toSet(),
+        naturalness = this.naturalness?.toDomain(),
+        mainDocument = this.mainDocument.toDomain()
+    )
+}

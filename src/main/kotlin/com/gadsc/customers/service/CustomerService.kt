@@ -10,7 +10,7 @@ import java.util.*
 class CustomerService(private val customerRepository: CustomerRepository) {
     fun create(customer: Customer): Customer = customerRepository.save(customer)
 
-    fun findById(id: UUID): Customer? = customerRepository.findByIdOrNull(id)
+    fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw RuntimeException("Customer not found")
 
     fun delete(customer: Customer) = customerRepository.delete(customer)
 

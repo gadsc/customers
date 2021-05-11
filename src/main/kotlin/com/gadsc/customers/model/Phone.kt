@@ -13,10 +13,6 @@ class Phone(
     @Column(name = "number")
     val number: String,
 
-    @Column(name = "phone_type")
-    val phoneType: String
+    @Column(name = "type")
+    val type: String
 )
-
-enum class CustomerPhoneType {
-    RESIDENTIAL, CELLPHONE, PROFESSIONAL
-}
