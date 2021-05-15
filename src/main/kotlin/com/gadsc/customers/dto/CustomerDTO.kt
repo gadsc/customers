@@ -1,14 +1,11 @@
 package com.gadsc.customers.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.gadsc.customers.model.Address
 import com.gadsc.customers.model.CivilStatus
 import com.gadsc.customers.model.Customer
-import com.gadsc.customers.model.Phone
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
-import javax.persistence.*
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 
 class CustomerDTO(
     @JsonProperty("name")
@@ -27,7 +24,7 @@ class CustomerDTO(
     @JsonProperty("father_full_name")
     val fatherFullName: String?,
     @JsonProperty("politically_exposed")
-    val politicallyExposed: Boolean?,
+    val politicallyExposed: Boolean,
     @JsonProperty("phones")
     val phones: Set<PhoneDTO>,
     @JsonProperty("addresses")

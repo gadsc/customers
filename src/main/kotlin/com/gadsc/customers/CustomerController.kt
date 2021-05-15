@@ -13,7 +13,8 @@ class CustomerController(
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody customer: CustomerDTO) = customerService.create(customer.toDomain())
+    fun create(@RequestBody customer: CustomerDTO) =
+        CustomerDTO.fromDomain(customerService.create(customer.toDomain()))
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -27,7 +28,7 @@ class CustomerController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun update(@PathVariable("id") id: UUID, @RequestBody customer: CustomerDTO) =
-        customerService.update(id, customer.toDomain())
+        CustomerDTO.fromDomain(customerService.update(id, customer.toDomain()))
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

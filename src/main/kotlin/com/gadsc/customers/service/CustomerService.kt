@@ -1,5 +1,6 @@
 package com.gadsc.customers.service
 
+import com.gadsc.customers.exception.ResourceNotFoundException
 import com.gadsc.customers.model.Customer
 import com.gadsc.customers.repository.CustomerRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -10,10 +11,10 @@ import java.util.*
 class CustomerService(private val customerRepository: CustomerRepository) {
     fun create(customer: Customer): Customer = customerRepository.save(customer)
 
-    fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw RuntimeException("Customer not found")
+    fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw ResourceNotFoundException("Customer not found")
 
     fun delete(id: UUID) {
-        val customerToDelete = customerRepository.findByIdOrNull(id)  ?: throw RuntimeException("Customer not found")
+        val customerToDelete = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
         customerRepository.save(customerToDelete.logicalDelete())
     }
@@ -21,7 +22,7 @@ class CustomerService(private val customerRepository: CustomerRepository) {
     fun findAll() = customerRepository.findAll()
 
     fun update(id: UUID, customer: Customer): Customer {
-        val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw RuntimeException("Customer not found")
+        val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
         return customerRepository.save(customerToUpdate.update(customer))
     }

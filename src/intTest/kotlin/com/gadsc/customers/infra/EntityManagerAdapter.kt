@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 class EntityManagerAdapter(private val entityManager: EntityManager) {
     @Transactional
     fun deleteAll(givenEntity: KClass<*>) {
-        val deleteQuery = "TRUNCATE ${givenEntity.simpleName} RESTART IDENTITY CASCADE"
+        val deleteQuery = "TRUNCATE ${givenEntity.simpleName}s RESTART IDENTITY CASCADE"
         println(deleteQuery)
         entityManager.createNativeQuery(deleteQuery).executeUpdate()
         flushAndClear()

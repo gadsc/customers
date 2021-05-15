@@ -1,9 +1,5 @@
 package com.gadsc.customers.model
 
-import com.gadsc.customers.dto.AddressDTO
-import com.gadsc.customers.dto.MainDocumentDTO
-import com.gadsc.customers.dto.NaturalnessDTO
-import com.gadsc.customers.dto.PhoneDTO
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -31,7 +27,7 @@ class Customer(
     @Column(name = "father_full_name")
     val fatherFullName: String?,
     @Column(name = "politically_exposed")
-    val politicallyExposed: Boolean?,
+    val politicallyExposed: Boolean,
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "updated_at")
