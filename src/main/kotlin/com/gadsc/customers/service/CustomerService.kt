@@ -19,7 +19,7 @@ class CustomerService(private val customerRepository: CustomerRepository) {
         customerRepository.save(customerToDelete.logicalDelete())
     }
 
-    fun findAll() = customerRepository.findAll()
+    fun findAll(): List<Customer> = customerRepository.findAll().toList()
 
     fun update(id: UUID, customer: Customer): Customer {
         val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")

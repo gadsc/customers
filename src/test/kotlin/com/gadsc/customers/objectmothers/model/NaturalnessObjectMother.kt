@@ -1,14 +1,14 @@
-package com.gadsc.customers.objectmothers.dto
+package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.dto.NaturalnessDTO
+import com.gadsc.customers.model.Naturalness
 
-object NaturalnessDTOObjectMother {
+object NaturalnessObjectMother {
     fun build(
         cityOfBirth: String? = "Customer City",
         stateOfBirth: String? = "Customer State",
         countryOfBirth: String? = "Customer Country",
         nationality: String = "Customer Nationality"
-    ): NaturalnessDTO = NaturalnessDTO(
+    ): Naturalness = Naturalness(
         cityOfBirth = cityOfBirth,
         stateOfBirth = stateOfBirth,
         countryOfBirth = countryOfBirth,

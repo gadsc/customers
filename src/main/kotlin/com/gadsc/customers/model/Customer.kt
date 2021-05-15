@@ -41,7 +41,7 @@ class Customer(
     @JoinColumn(name = "customer_id")
     val addresses: Set<Address> = emptySet(),
     @Embedded
-    var naturalness: Naturalness?,
+    val naturalness: Naturalness?,
     @Embedded
     val mainDocument: MainDocument
 ) {

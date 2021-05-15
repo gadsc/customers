@@ -1,9 +1,11 @@
-package com.gadsc.customers.objectmothers.dto
+package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.dto.AddressDTO
+import com.gadsc.customers.model.Address
+import java.util.UUID
 
-object AddressDTOObjectMother {
+object AddressObjectMother {
     fun build(
+        id: UUID? = null,
         city: String = "Customer City",
         state: String = "Customer State",
         street: String = "Customer Street",
@@ -12,7 +14,8 @@ object AddressDTOObjectMother {
         complement: String? = "Customer with Complement",
         number: String = "123",
         addressType: String = "HOME"
-    ): AddressDTO = AddressDTO(
+    ): Address = Address(
+        id = id,
         city = city,
         state = state,
         street = street,
