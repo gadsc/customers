@@ -1,5 +1,7 @@
 package com.gadsc.customers.service
 
+import com.gadsc.customers.CustomerIndexerPublisher
+import com.gadsc.customers.dto.CustomerDTO
 import com.gadsc.customers.exception.ResourceNotFoundException
 import com.gadsc.customers.model.Customer
 import com.gadsc.customers.repository.CustomerRepository
@@ -8,8 +10,13 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class CustomerService(private val customerRepository: CustomerRepository) {
-    fun create(customer: Customer): Customer = customerRepository.save(customer)
+class CustomerService(
+    private val customerRepository: CustomerRepository,
+    private val customerIndexerPublisher: CustomerIndexerPublisher
+) {
+    fun create(customer: Customer): Customer =
+        customerRepository.save(customer)
+            .apply { customerIndexerPublisher.publish(CustomerDTO.fromDomain(this)) }
 
     fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw ResourceNotFoundException("Customer not found")
 

@@ -25,6 +25,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+	implementation("org.springframework.cloud:spring-cloud-aws-messaging")
+	implementation("org.springframework.cloud:spring-cloud-stream-test-support")
+
 	implementation("org.postgresql:postgresql:42.2.8")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {

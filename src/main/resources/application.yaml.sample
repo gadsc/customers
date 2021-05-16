@@ -13,6 +13,14 @@ spring:
 aws:
   enabled: false
   region: us-east-1
+  sns:
+    endpoint: http://localstack:4566
+    topic:
+        customer-indexer: arn:aws:sns:us-east-1:000000000000:customer-indexer
+  sqs:
+    endpoint: http://localstack:4566
+    queue:
+        customer-indexer: http://localstack:4566/000000000000/customer-indexer
 
 management:
   endpoints:
