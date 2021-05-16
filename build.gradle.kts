@@ -18,20 +18,29 @@ repositories {
 }
 
 dependencies {
+	// Kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+	// Spring Cloud
 	implementation("org.springframework.cloud:spring-cloud-aws-messaging")
 	implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging")
 	implementation("org.springframework.cloud:spring-cloud-stream-test-support")
 
+	// Elasticsearch
+	implementation("org.springframework.data:spring-data-elasticsearch")
+	implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+
+	// Database
 	implementation("org.postgresql:postgresql:42.2.8")
 
+	// Tests
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
