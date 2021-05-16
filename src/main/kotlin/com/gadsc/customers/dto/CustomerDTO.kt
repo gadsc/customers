@@ -46,7 +46,7 @@ class CustomerDTO(
             politicallyExposed = customer.politicallyExposed,
             phones = customer.phones.map { PhoneDTO.fromDomain(it) }.toSet(),
             addresses = customer.addresses.map { AddressDTO.fromDomain(it) }.toSet(),
-            naturalness = if (customer.naturalness != null) NaturalnessDTO.fromDomain(customer.naturalness!!) else null,
+            naturalness = if (customer.naturalness != null) NaturalnessDTO.fromDomain(customer.naturalness) else null,
             mainDocument = MainDocumentDTO.fromDomain(customer.mainDocument)
         )
     }
