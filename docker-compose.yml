@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  application:
+    build:
+      context: .
+    image: customers
+    hostname: customers
+    container_name: customers
+    ports:
+      - "8080:8080"
+    init: true
+    depends_on:
+      - postgres
+    environment:
+      DATASOURCE_URL: $DATASOURCE_URL
+
+  postgres:
+    container_name: customers_postgres
+    hostname: customers_postgres
+    restart: always
+    image: postgres:11-alpine
+    command: [ "-c", "max_connections=200" ]
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql11/data
+    environment:
+      POSTGRES_DB: customers
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+  postgres:
