@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.*
 class CustomerSearchController(
     private val customerSearchService: CustomerSearchService
 ) {
+//    @PostMapping
+//    fun create(@RequestBody product: CustomerSearch) = customerSearchService.createProduct(product)
+
     @PostMapping
-    fun create(@RequestBody product: CustomerSearch) = customerSearchService.createProduct(product)
+    fun search(@RequestBody searchCustomerDTO: SearchCustomerDTO) =
+        customerSearchService.findBy(searchCustomerDTO)
 
     @GetMapping
-    fun findByName(@RequestParam(name = "name") name: String) = customerSearchService.findByNameOrCategory(name)
+    fun findByName(@RequestParam(name = "name") name: String) =
+        customerSearchService.findByNameOrCategory(name)
 }

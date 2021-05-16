@@ -13,7 +13,7 @@ import java.util.*
 import javax.persistence.*
 
 object CustomerIndex {
-    const val INDEX_NAME = "customer_index"
+    const val INDEX_NAME = "customer_index_2"
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)
@@ -26,9 +26,11 @@ class CustomerSearch(
 
     val email: String,
 
+    @Field(type = FieldType.Keyword)
     val jobTitle: String?,
 
-    val civilStatus: CivilStatus,
+    @Field(type = FieldType.Keyword)
+    val civilStatus: String,
 
     @Field(type = FieldType.Date, format = DateFormat.date)
     val birthdate: LocalDate,
@@ -48,6 +50,7 @@ class CustomerSearch(
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute)
     val deletedAt: LocalDateTime? = null,
 
+    @Field(type = FieldType.Nested)
     val phones: Set<PhoneSearch> = emptySet(),
 
     val addresses: Set<AddressSearch> = emptySet(),
@@ -58,10 +61,9 @@ class CustomerSearch(
 )
 
 class PhoneSearch(
-
     val number: String,
 
-
+    @Field(type = FieldType.Keyword)
     val type: String
 )
 
@@ -81,6 +83,7 @@ class AddressSearch(
 
     val number: String,
 
+    @Field(type = FieldType.Keyword)
     val addressType: String
 )
 
@@ -92,11 +95,12 @@ class NaturalnessSearch(
 
     val countryOfBirth: String?,
 
+    @Field(type = FieldType.Keyword)
     val nationality: String
 )
 
 class MainDocumentSearch(
-
+    @Field(type = FieldType.Keyword)
     val mainDocumentType: String,
 
 
