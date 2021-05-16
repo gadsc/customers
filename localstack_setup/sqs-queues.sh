@@ -70,8 +70,8 @@ guess_queue_arn_from_name() {
 }
 
 get_messages_from_queue() {
-  local QUEUE_URL=$1
-  aws --endpoint-url=http://${LOCALSTACK_HOST}:4566 sqs receive-message --queue-url $QUEUE_URL --max-number-of-messages 40
+#  local QUEUE_URL=$1
+  aws --endpoint-url=http://${LOCALSTACK_HOST}:4566 sqs receive-message --queue-url http://localstack:4566/000000000000/customer-indexer --max-number-of-messages 10
 }
 
 if [ -n "$SNS_WITH_SQS" ]; then
@@ -93,9 +93,12 @@ if [ -n "$SNS_WITH_SQS" ]; then
 		echo "linking done:"
     echo "$LINKING_RESULT"
 
-    echo "all messages from queue:"
-    MESSAGES_IN_QUEUE=$(get_messages_from_queue $CREATED_QUEUE_URL)
-    echo "$MESSAGES_IN_QUEUE"
+#    echo "all messages from queue:"
+#    MESSAGES_IN_QUEUE=$(get_messages_from_queue $CREATED_QUEUE_ARN)
+#    for message in "${MESSAGES_IN_QUEUE[@]}"
+#    do
+#      echo "$message"
+#    done
 	done
 	echo "Multiple topic and queues with subscription created"
 fi
@@ -105,4 +108,7 @@ echo "$(get_all_topics)"
 
 echo "all queues are:"
 echo "$(get_all_queues)"
+
+echo "all messages in queue:"
+echo "$(get_messages_from_queue)"
 

@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
 	implementation("org.springframework.cloud:spring-cloud-aws-messaging")
+	implementation("org.springframework.cloud:spring-cloud-starter-aws-messaging")
 	implementation("org.springframework.cloud:spring-cloud-stream-test-support")
 
 	implementation("org.postgresql:postgresql:42.2.8")

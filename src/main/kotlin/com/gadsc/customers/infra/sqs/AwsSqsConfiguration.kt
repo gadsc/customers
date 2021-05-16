@@ -1,7 +1,7 @@
 package com.gadsc.customers.infra.sqs
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.client.builder.AwsClientBuilder
+import com.amazonaws.internal.StaticCredentialsProvider
 import com.amazonaws.services.sqs.AmazonSQSAsync
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.messaging.converter.MappingJackson2MessageConverter
-import org.springframework.messaging.handler.annotation.support.PayloadArgumentResolver
 import org.springframework.messaging.handler.annotation.support.PayloadMethodArgumentResolver
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver
 
@@ -34,7 +33,6 @@ class AwsSqsConfiguration(
     @Primary
     fun awsSqsClient(): AmazonSQSAsync {
         return AmazonSQSAsyncClientBuilder.standard()
-            .withCredentials(DefaultAWSCredentialsProviderChain())
             .withEndpointConfiguration(AwsClientBuilder.EndpointConfiguration(awsSqsEndpoint, awsRegion))
             .build()
     }
@@ -42,6 +40,18 @@ class AwsSqsConfiguration(
     @Bean
     fun queueMessagingTemplate(): QueueMessagingTemplate? {
         return QueueMessagingTemplate(awsSqsClient())
+    }
+
+    @Bean
+    fun queueMessageHandlerFactory(objectMapper: ObjectMapper): QueueMessageHandlerFactory {
+        val converter = MappingJackson2MessageConverter()
+        objectMapper.registerModule(KotlinModule())
+            .registerModule(JavaTimeModule())
+        converter.objectMapper = objectMapper
+        converter.isStrictContentTypeMatch = false
+        val factory = QueueMessageHandlerFactory()
+        factory.setArgumentResolvers(mutableListOf<HandlerMethodArgumentResolver>(PayloadMethodArgumentResolver(converter)))
+        return factory
     }
 }
 

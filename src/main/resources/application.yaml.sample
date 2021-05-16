@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://${DATASOURCE_URL:localhost}:5432/customers'
+    url: 'jdbc:postgresql://localhost:5432/customers'
     username: postgres
     password: postgres
   jackson:
@@ -9,18 +9,24 @@ spring:
     serialization.indent-output: true
     serialization.write-dates-as-timestamps: false
     mapper.accept-case-insensitive-enums: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8081
 
 aws:
   enabled: false
   region: us-east-1
   sns:
-    endpoint: http://localstack:4566
+    endpoint: http://localhost:4566
     topic:
-        customer-indexer: arn:aws:sns:us-east-1:000000000000:customer-indexer
+      customer-indexer: arn:aws:sns:us-east-1:000000000000:customer-indexer
   sqs:
-    endpoint: http://localstack:4566
+    endpoint: http://localhost:4566
     queue:
-        customer-indexer: http://localstack:4566/000000000000/customer-indexer
+      customer-indexer: http://localhost:4566/000000000000/customer-indexer
 
 management:
   endpoints:
