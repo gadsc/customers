@@ -47,7 +47,7 @@
       ```shell script
       make local-without-application
       ```
-    - After the bootstrap of `localstack`, `postgres` and `elasticsearch` you can run the application with the `./gradlew` or with an IDE
+    - After the bootstrap of `localstack`, `postgres` and `elasticsearch` you can run the application with the `./gradlew` or run the `Main class` in some IDE
       ```shell script
       ./gradlew bootRun
       ```
