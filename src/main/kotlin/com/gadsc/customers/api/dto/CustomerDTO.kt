@@ -38,22 +38,7 @@ class CustomerDTO(
 ) {
     companion object {
         fun fromDomain(customer: Customer): CustomerDTO = CustomerDTO(
-            name = customer.name,
-            email = customer.email,
-            jobTitle = customer.jobTitle,
-            civilStatus = customer.civilStatus,
-            birthdate = customer.birthdate,
-            motherFullName = customer.motherFullName,
-            fatherFullName = customer.fatherFullName,
-            politicallyExposed = customer.politicallyExposed,
-            phones = customer.phones.map { PhoneDTO.fromDomain(it) }.toSet(),
-            addresses = customer.addresses.map { AddressDTO.fromDomain(it) }.toSet(),
-            naturalness = if (customer.naturalness != null) NaturalnessDTO.fromDomain(customer.naturalness) else null,
-            mainDocument = MainDocumentDTO.fromDomain(customer.mainDocument)
-        )
-
-        fun toCommand(customer: Customer): CustomerDTO = CustomerDTO(
-            id = customer.id.toString(),
+            id = customer.id?.toString(),
             name = customer.name,
             email = customer.email,
             jobTitle = customer.jobTitle,
