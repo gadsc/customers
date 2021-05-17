@@ -1,5 +1,7 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher
 
+import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.service.CustomerSearchService
 import org.springframework.web.bind.annotation.*
 
 @RestController

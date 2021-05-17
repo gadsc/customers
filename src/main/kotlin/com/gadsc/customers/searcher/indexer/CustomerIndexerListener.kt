@@ -1,4 +1,4 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.indexer
 
 import com.gadsc.customers.api.dto.CustomerDTO
 import org.slf4j.LoggerFactory

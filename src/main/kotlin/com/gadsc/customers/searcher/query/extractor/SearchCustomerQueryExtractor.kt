@@ -1,5 +1,7 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.query.extractor
 
+import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.SearchCustomerQueryBuilder
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component
 class SearchCustomerQueryExtractor : CustomerQueryExtractor {
     override fun extract(searchCustomerDTO: SearchCustomerDTO): QueryBuilder? =
         searchCustomerDTO.let {
-            SearchCustomerQueryBuilder.Builder.instance()
+            SearchCustomerQueryBuilder.instance()
                 .withCustomQuery(field = it.name, matchQueryBuilder = QueryBuilders.matchQuery("name", it)
                     .fuzziness(Fuzziness.ONE)
                     .minimumShouldMatch("65%")

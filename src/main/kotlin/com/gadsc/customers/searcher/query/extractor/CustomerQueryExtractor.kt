@@ -1,5 +1,6 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.query.extractor
 
+import com.gadsc.customers.searcher.dto.SearchCustomerDTO
 import org.elasticsearch.index.query.QueryBuilder
 
 interface CustomerQueryExtractor {

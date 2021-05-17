@@ -1,5 +1,7 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.query.extractor
 
+import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.SearchCustomerQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.springframework.stereotype.Component
 
@@ -7,7 +9,7 @@ import org.springframework.stereotype.Component
 class NaturalnessCustomerQueryExtractor: CustomerQueryExtractor {
     override fun extract(searchCustomerDTO: SearchCustomerDTO): QueryBuilder? =
         searchCustomerDTO.naturalness?.let {
-            SearchCustomerQueryBuilder.Builder.instance("naturalness")
+            SearchCustomerQueryBuilder.instance("naturalness")
                 .withField(it.cityOfBirth, "naturalness.cityOfBirth")
                 .withField(it.stateOfBirth, "naturalness.stateOfBirth")
                 .withField(it.countryOfBirth, "naturalness.countryOfBirth")

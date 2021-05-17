@@ -1,4 +1,4 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.DateFormat
@@ -15,7 +15,7 @@ object CustomerIndex {
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)
-class CustomerSearch(
+class SearchableCustomer(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: String? = null,
@@ -45,65 +45,15 @@ class CustomerSearch(
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute)
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute)
-    val deletedAt: LocalDateTime? = null,
+    @Field(type = FieldType.Nested)
+    val phones: Set<SearchablePhone> = emptySet(),
 
     @Field(type = FieldType.Nested)
-    val phones: Set<PhoneSearch> = emptySet(),
+    val addresses: Set<SearchableAddress> = emptySet(),
 
     @Field(type = FieldType.Nested)
-    val addresses: Set<AddressSearch> = emptySet(),
+    val naturalness: SearchableNaturalness?,
 
     @Field(type = FieldType.Nested)
-    val naturalness: NaturalnessSearch?,
-
-    @Field(type = FieldType.Nested)
-    val mainDocument: MainDocumentSearch
-)
-
-class PhoneSearch(
-    val number: String,
-
-    @Field(type = FieldType.Keyword)
-    val type: String
-)
-
-class AddressSearch(
-
-    val city: String,
-
-    val state: String,
-
-    val street: String,
-
-    val zipcode: String,
-
-    val neighborhood: String,
-
-    val complement: String?,
-
-    val number: String,
-
-    @Field(type = FieldType.Keyword)
-    val addressType: String
-)
-
-class NaturalnessSearch(
-
-    val cityOfBirth: String?,
-
-    val stateOfBirth: String?,
-
-    val countryOfBirth: String?,
-
-    @Field(type = FieldType.Keyword)
-    val nationality: String
-)
-
-class MainDocumentSearch(
-    @Field(type = FieldType.Keyword)
-    val mainDocumentType: String,
-
-
-    val code: String
+    val mainDocument: SearchableMainDocument
 )

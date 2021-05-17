@@ -1,5 +1,7 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.query.extractor
 
+import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.SearchCustomerQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.springframework.stereotype.Component
 
@@ -7,7 +9,7 @@ import org.springframework.stereotype.Component
 class MainDocumentCustomerQueryExtractor: CustomerQueryExtractor {
     override fun extract(searchCustomerDTO: SearchCustomerDTO): QueryBuilder? =
         searchCustomerDTO.mainDocument?.let {
-            SearchCustomerQueryBuilder.Builder.instance("mainDocument")
+            SearchCustomerQueryBuilder.instance("mainDocument")
                 .withField(it.mainDocumentType, "mainDocument.mainDocumentType")
                 .withField(it.code, "mainDocument.code")
                 .build()

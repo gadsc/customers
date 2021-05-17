@@ -1,4 +1,4 @@
-package com.gadsc.customers.worker.indexer
+package com.gadsc.customers.searcher.query
 
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.index.query.MatchQueryBuilder
