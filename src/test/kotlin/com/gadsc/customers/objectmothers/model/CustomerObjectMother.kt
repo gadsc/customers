@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.model.*
+import com.gadsc.customers.api.model.*
 import java.time.LocalDate
 import java.util.UUID
 

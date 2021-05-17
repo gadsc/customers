@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.dto
 
-import com.gadsc.customers.dto.AddressDTO
+import com.gadsc.customers.api.dto.AddressDTO
 
 object AddressDTOObjectMother {
     fun build(

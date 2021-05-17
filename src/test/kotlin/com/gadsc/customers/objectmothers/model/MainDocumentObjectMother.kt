@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.model.MainDocument
+import com.gadsc.customers.api.model.MainDocument
 
 object MainDocumentObjectMother {
     fun build(

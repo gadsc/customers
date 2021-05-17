@@ -1,7 +1,7 @@
 package com.gadsc.customers.objectmothers.dto
 
-import com.gadsc.customers.dto.*
-import com.gadsc.customers.model.CivilStatus
+import com.gadsc.customers.api.dto.*
+import com.gadsc.customers.api.model.CivilStatus
 import java.time.LocalDate
 
 object CustomerDTOObjectMother {

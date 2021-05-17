@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.dto
 
-import com.gadsc.customers.dto.NaturalnessDTO
+import com.gadsc.customers.api.dto.NaturalnessDTO
 
 object NaturalnessDTOObjectMother {
     fun build(

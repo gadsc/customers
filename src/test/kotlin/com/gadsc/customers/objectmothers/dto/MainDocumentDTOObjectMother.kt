@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.dto
 
-import com.gadsc.customers.dto.MainDocumentDTO
+import com.gadsc.customers.api.dto.MainDocumentDTO
 
 object MainDocumentDTOObjectMother {
     fun build(
