@@ -13,12 +13,6 @@ else
     export DATASOURCE_URL = host.docker.internal
 endif
 
-local:
-	@$(MAKE) dev-down
-	@gradle clean assemble
-	@docker-compose up -d --build
-	docker logs customers --follow
-
 local-without-application: ## Executa local environment without application
 	@$(MAKE) dev-down
 	@docker-compose up -d postgres localstack elasticsearch
