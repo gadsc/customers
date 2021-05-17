@@ -9,9 +9,6 @@ spring:
     serialization.indent-output: true
     serialization.write-dates-as-timestamps: false
     mapper.accept-case-insensitive-enums: true
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
 
 server:
   port: 8081
