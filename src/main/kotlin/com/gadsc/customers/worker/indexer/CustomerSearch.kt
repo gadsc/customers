@@ -1,19 +1,17 @@
 package com.gadsc.customers.worker.indexer
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.gadsc.customers.model.*
-import org.springframework.data.elasticsearch.annotations.Document
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.DateFormat
+import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
-import javax.persistence.*
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 
 object CustomerIndex {
-    const val INDEX_NAME = "customer_index_3"
+    const val INDEX_NAME = "customer_index"
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)

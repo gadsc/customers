@@ -1,15 +1,10 @@
 package com.gadsc.customers.worker.indexer
 
-import com.gadsc.customers.dto.NaturalnessDTO
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.MatchQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
-import org.springframework.data.elasticsearch.annotations.FieldType
-import org.springframework.data.elasticsearch.core.query.Criteria
-import org.springframework.data.elasticsearch.core.query.Field
-import org.springframework.data.elasticsearch.core.query.SimpleField
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -81,7 +76,7 @@ class SearchCustomerDTO(
         deletedAt?.let {
             QueryBuilders.matchQuery("deletedAt", it)
         }
-    )// + (phone?.toCriteria() ?: emptyList())
+    )
 }
 
 class SearchPhoneDTO(

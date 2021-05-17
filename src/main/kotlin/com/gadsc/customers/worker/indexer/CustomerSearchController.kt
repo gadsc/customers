@@ -13,8 +13,4 @@ class CustomerSearchController(
     @PostMapping
     fun search(@RequestBody searchCustomerDTO: SearchCustomerDTO) =
         customerSearchService.findBy(searchCustomerDTO)
-
-    @GetMapping
-    fun findByName(@RequestParam(name = "name") name: String) =
-        customerSearchService.findByNameOrCategory(name)
 }
