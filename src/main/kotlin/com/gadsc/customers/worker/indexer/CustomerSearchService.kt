@@ -1,9 +1,6 @@
 package com.gadsc.customers.worker.indexer
 
-import org.apache.lucene.search.join.ScoreMode
-import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.query.QueryBuilders.*
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery
@@ -22,12 +19,28 @@ class CustomerSearchService(
     fun findByNameOrCategory(query: String): List<CustomerSearch> = customerSearchRepository.findByNameOrEmail(query, query)
 
     fun findBy(searchCustomerDTO: SearchCustomerDTO): List<CustomerSearch> {
-        val builder: QueryBuilder = QueryBuilders.nestedQuery("phones",
-            QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("phones.type", "CELLPHONE")),
-            ScoreMode.None)
+//        val builder: QueryBuilder = QueryBuilders.matchQuery("name", "with")
+        val rootQuery = QueryBuilders.boolQuery()
+        searchCustomerDTO.toCriteria().forEach { rootQuery.must(it) }
 
-        val searchQuery: NativeSearchQuery = NativeSearchQueryBuilder().withQuery(builder).build()
+        val nestedQueries = listOfNotNull(
+            searchCustomerDTO.phone?.toQuery(),
+            searchCustomerDTO.address?.toQuery(),
+            searchCustomerDTO.naturalness?.toQuery(),
+            searchCustomerDTO.mainDocument?.toQuery()
+        )
+
+        val nativeSearchQueryBuilder = NativeSearchQueryBuilder().withQuery(rootQuery)
+
+        nestedQueries.forEach {
+            nativeSearchQueryBuilder.withQuery(it)
+        }
+
+//        val builder: QueryBuilder = QueryBuilders.nestedQuery("phones",
+//            QueryBuilders.boolQuery()
+//                .must(QueryBuilders.matchQuery("phones.type", "CELLPHONE")),
+//            ScoreMode.None)
+        val searchQuery: NativeSearchQuery = nativeSearchQueryBuilder.build()
         val users: SearchHits<CustomerSearch> = elasticsearchOperations.search(searchQuery, CustomerSearch::class.java)
 //        val criterias = searchCustomerDTO.toCriteria()
 //        val phoneCriteria = searchCustomerDTO.phone?.toCriteria()?.reduce { acc, criteria -> acc.and(criteria) }

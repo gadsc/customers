@@ -1,5 +1,11 @@
 package com.gadsc.customers.worker.indexer
 
+import com.gadsc.customers.dto.NaturalnessDTO
+import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.common.unit.Fuzziness
+import org.elasticsearch.index.query.MatchQueryBuilder
+import org.elasticsearch.index.query.QueryBuilder
+import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.data.elasticsearch.annotations.FieldType
 import org.springframework.data.elasticsearch.core.query.Criteria
 import org.springframework.data.elasticsearch.core.query.Field
@@ -32,45 +38,48 @@ class SearchCustomerDTO(
 
     val phone: SearchPhoneDTO? = null,
 
-    val address: AddressSearch? = null,
+    val address: SearchAddressDTO? = null,
 
-    val naturalness: NaturalnessSearch? = null,
+    val naturalness: SearchNaturalnessDTO? = null,
 
-    val mainDocument: MainDocumentSearch? = null
+    val mainDocument: SearchMainDocumentDTO? = null
 ) {
-    fun toCriteria(): List<Criteria> = listOfNotNull(
+    fun toCriteria(): List<MatchQueryBuilder> = listOfNotNull(
         name?.let {
-            Criteria("name").contains(it)
+            QueryBuilders.matchQuery("name", it)
+                .fuzziness(Fuzziness.ONE)
+                .minimumShouldMatch("65%")
+                .prefixLength(3)
         },
         email?.let {
-            Criteria("email").contains(it)
+            QueryBuilders.matchQuery("email", it)
         },
         jobTitle?.let {
-            Criteria("jobTitle").`is`(it)
+            QueryBuilders.matchQuery("jobTitle", it)
         },
         civilStatus?.let {
-            Criteria("civilStatus").`is`(it)
+            QueryBuilders.matchQuery("civilStatus", it)
         },
         birthdate?.let {
-            Criteria("birthdate").`is`(it)
+            QueryBuilders.matchQuery("birthdate", it)
         },
         motherFullName?.let {
-            Criteria("motherFullName").contains(it)
+            QueryBuilders.matchQuery("motherFullName", it)
         },
         fatherFullName?.let {
-            Criteria("fatherFullName").contains(it)
+            QueryBuilders.matchQuery("fatherFullName", it)
         },
         politicallyExposed?.let {
-            Criteria("politicallyExposed").`is`(it)
+            QueryBuilders.matchQuery("politicallyExposed", it)
         },
         createdAt?.let {
-            Criteria("createdAt").`is`(it)
+            QueryBuilders.matchQuery("createdAt", it)
         },
         updatedAt?.let {
-            Criteria("updatedAt").`is`(it)
+            QueryBuilders.matchQuery("updatedAt", it)
         },
         deletedAt?.let {
-            Criteria("deletedAt").`is`(it)
+            QueryBuilders.matchQuery("deletedAt", it)
         }
     )// + (phone?.toCriteria() ?: emptyList())
 }
@@ -80,14 +89,23 @@ class SearchPhoneDTO(
 
     val type: String? = null
 ) {
-    fun toCriteria(): List<Criteria> = listOfNotNull(
-        number?.let {
-            Criteria("number").`is`(it)
-        },
-        type?.let {
-            Criteria("type").`is`(it)
+    fun toQuery(): QueryBuilder? {
+        val queries = listOfNotNull(
+            number?.let {
+                QueryBuilders.matchQuery("phones.number", it)
+            },
+            type?.let {
+                QueryBuilders.matchQuery("phones.type", it)
+            }
+        )
+
+        return if (queries.isEmpty()) null else {
+            val boolQuery = QueryBuilders.boolQuery()
+            queries.forEach { boolQuery.must(it) }
+
+            QueryBuilders.nestedQuery("phones", boolQuery, ScoreMode.None)
         }
-    )
+    }
 }
 
 class SearchAddressDTO(
@@ -106,7 +124,43 @@ class SearchAddressDTO(
     val number: String? = null,
 
     val addressType: String? = null
-)
+){
+    fun toQuery(): QueryBuilder? {
+        val queries = listOfNotNull(
+            city?.let {
+                QueryBuilders.matchQuery("addresses.city", it)
+            },
+            state?.let {
+                QueryBuilders.matchQuery("addresses.state", it)
+            },
+            street?.let {
+                QueryBuilders.matchQuery("addresses.street", it)
+            },
+            zipcode?.let {
+                QueryBuilders.matchQuery("addresses.zipcode", it)
+            },
+            neighborhood?.let {
+                QueryBuilders.matchQuery("addresses.neighborhood", it)
+            },
+            complement?.let {
+                QueryBuilders.matchQuery("addresses.complement", it)
+            },
+            number?.let {
+                QueryBuilders.matchQuery("addresses.number", it)
+            },
+            addressType?.let {
+                QueryBuilders.matchQuery("addresses.addressType", it)
+            }
+        )
+
+        return if (queries.isEmpty()) null else {
+            val boolQuery = QueryBuilders.boolQuery()
+            queries.forEach { boolQuery.must(it) }
+
+            QueryBuilders.nestedQuery("addresses", boolQuery, ScoreMode.None)
+        }
+    }
+}
 
 class SearchNaturalnessDTO(
     val cityOfBirth: String? = null,
@@ -116,10 +170,52 @@ class SearchNaturalnessDTO(
     val countryOfBirth: String? = null,
 
     val nationality: String? = null
-)
+){
+    fun toQuery(): QueryBuilder? {
+        val queries = listOfNotNull(
+            cityOfBirth?.let {
+                QueryBuilders.matchQuery("naturalness.cityOfBirth", it)
+            },
+            stateOfBirth?.let {
+                QueryBuilders.matchQuery("naturalness.stateOfBirth", it)
+            },
+            countryOfBirth?.let {
+                QueryBuilders.matchQuery("naturalness.countryOfBirth", it)
+            },
+            nationality?.let {
+                QueryBuilders.matchQuery("naturalness.nationality", it)
+            }
+        )
+
+        return if (queries.isEmpty()) null else {
+            val boolQuery = QueryBuilders.boolQuery()
+            queries.forEach { boolQuery.must(it) }
+
+            QueryBuilders.nestedQuery("naturalness", boolQuery, ScoreMode.None)
+        }
+    }
+}
 
 data class SearchMainDocumentDTO(
     val mainDocumentType: String? = null,
 
     val code: String? = null
-)
+){
+    fun toQuery(): QueryBuilder? {
+        val queries = listOfNotNull(
+            mainDocumentType?.let {
+                QueryBuilders.matchQuery("mainDocument.mainDocumentType", it)
+            },
+            code?.let {
+                QueryBuilders.matchQuery("mainDocument.code", it)
+            }
+        )
+
+        return if (queries.isEmpty()) null else {
+            val boolQuery = QueryBuilders.boolQuery()
+            queries.forEach { boolQuery.must(it) }
+
+            QueryBuilders.nestedQuery("mainDocument", boolQuery, ScoreMode.None)
+        }
+    }
+}

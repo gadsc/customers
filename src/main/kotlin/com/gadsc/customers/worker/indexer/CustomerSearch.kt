@@ -13,7 +13,7 @@ import java.util.*
 import javax.persistence.*
 
 object CustomerIndex {
-    const val INDEX_NAME = "customer_index_2"
+    const val INDEX_NAME = "customer_index_3"
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)
@@ -53,10 +53,13 @@ class CustomerSearch(
     @Field(type = FieldType.Nested)
     val phones: Set<PhoneSearch> = emptySet(),
 
+    @Field(type = FieldType.Nested)
     val addresses: Set<AddressSearch> = emptySet(),
 
+    @Field(type = FieldType.Nested)
     val naturalness: NaturalnessSearch?,
 
+    @Field(type = FieldType.Nested)
     val mainDocument: MainDocumentSearch
 )
 
