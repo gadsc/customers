@@ -1,4 +1,4 @@
-package com.gadsc.customers.searcher.indexer
+package com.gadsc.customers.searcher.listener
 
 import com.gadsc.customers.api.dto.CustomerDTO
 import com.gadsc.customers.searcher.model.SearchableCustomer

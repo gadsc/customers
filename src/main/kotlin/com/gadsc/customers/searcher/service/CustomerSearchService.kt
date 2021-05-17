@@ -24,10 +24,10 @@ class CustomerSearchService(
             } ?: customer
         )
 
-    fun delete(externalId: String) {
-        customerSearchRepository.findByExternalId(externalId)?.let {
+    fun delete(customer: SearchableCustomer) {
+        customerSearchRepository.findByExternalId(customer.externalId)?.let {
             customerSearchRepository.delete(it)
-        } ?: throw ResourceNotFoundException("Resource with id $externalId to delete not found")
+        } ?: throw ResourceNotFoundException("Resource with id ${customer.externalId} to delete not found")
     }
 
     fun findBy(customerQueryDTO: CustomerQueryDTO): List<SearchableCustomer> {

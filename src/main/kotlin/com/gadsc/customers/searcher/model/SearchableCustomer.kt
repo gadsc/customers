@@ -13,7 +13,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 
 object CustomerIndex {
-    const val INDEX_NAME = "customer_index_5"
+    const val INDEX_NAME = "customer_index"
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)
