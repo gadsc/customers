@@ -17,6 +17,6 @@ class CustomerIndexerListener(
     fun listen(customerDTO: CustomerDTO) {
         logger.info("Consumed from sqs successfully $customerDTO")
 
-        customerSearchService.createCustomer(SearchableCustomer.from(customerDTO))
+        customerSearchService.createOrUpdateCustomer(SearchableCustomer.from(customerDTO))
     }
 }
