@@ -18,6 +18,13 @@ services:
       - /tmp/localstack:/tmp/localstack
       - '/var/run/docker.sock:/var/run/docker.sock'
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+
   application:
     build:
       context: .
@@ -30,6 +37,7 @@ services:
     depends_on:
       - postgres
       - localstack
+      - elasticsearch
     environment:
       DATASOURCE_URL: $DATASOURCE_URL
 
