@@ -3,7 +3,7 @@ package com.gadsc.customers.searcher.service
 import com.gadsc.customers.searcher.model.SearchableCustomer
 import com.gadsc.customers.searcher.query.extractor.CustomerQueryExtractor
 import com.gadsc.customers.searcher.repository.CustomerSearchRepository
-import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.dto.CustomerQueryDTO
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
 import org.springframework.stereotype.Service
@@ -17,10 +17,10 @@ class CustomerSearchService(
 ) {
     fun createProduct(product: SearchableCustomer) = customerSearchRepository.save(product)
 
-    fun findBy(searchCustomerDTO: SearchCustomerDTO): List<SearchableCustomer> {
+    fun findBy(customerQueryDTO: CustomerQueryDTO): List<SearchableCustomer> {
         val nativeSearchQueryBuilder = NativeSearchQueryBuilder()
 
-        customerQueryExtractors.mapNotNull { it.extract(searchCustomerDTO) }
+        customerQueryExtractors.mapNotNull { it.extract(customerQueryDTO) }
             .forEach {
                 nativeSearchQueryBuilder.withQuery(it)
             }

@@ -1,6 +1,6 @@
 package com.gadsc.customers.searcher.query.extractor
 
-import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.dto.CustomerQueryDTO
 import com.gadsc.customers.searcher.query.SearchCustomerQueryBuilder
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.QueryBuilder
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class SearchCustomerQueryExtractor : CustomerQueryExtractor {
-    override fun extract(searchCustomerDTO: SearchCustomerDTO): QueryBuilder? =
-        searchCustomerDTO.let {
+    override fun extract(customerQueryDTO: CustomerQueryDTO): QueryBuilder? =
+        customerQueryDTO.let {
             SearchCustomerQueryBuilder.instance()
                 .withCustomQuery(field = it.name, matchQueryBuilder = QueryBuilders.matchQuery("name", it)
                     .fuzziness(Fuzziness.ONE)

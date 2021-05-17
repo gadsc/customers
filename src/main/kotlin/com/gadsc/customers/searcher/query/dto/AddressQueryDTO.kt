@@ -1,6 +1,6 @@
-package com.gadsc.customers.searcher.dto
+package com.gadsc.customers.searcher.query.dto
 
-class SearchAddressDTO(
+class AddressQueryDTO(
     val city: String? = null,
 
     val state: String? = null,

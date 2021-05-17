@@ -1,6 +1,6 @@
-package com.gadsc.customers.searcher.dto
+package com.gadsc.customers.searcher.query.dto
 
-class SearchNaturalnessDTO(
+class NaturalnessQueryDTO(
     val cityOfBirth: String? = null,
 
     val stateOfBirth: String? = null,

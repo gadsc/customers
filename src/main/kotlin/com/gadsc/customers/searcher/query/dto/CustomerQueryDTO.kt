@@ -1,9 +1,9 @@
-package com.gadsc.customers.searcher.dto
+package com.gadsc.customers.searcher.query.dto
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class SearchCustomerDTO(
+class CustomerQueryDTO(
     val name: String? = null,
 
     val email: String? = null,
@@ -26,11 +26,11 @@ class SearchCustomerDTO(
 
     val deletedAt: LocalDateTime? = null,
 
-    val phone: SearchPhoneDTO? = null,
+    val phoneQuery: PhoneQueryDTO? = null,
 
-    val address: SearchAddressDTO? = null,
+    val addressQuery: AddressQueryDTO? = null,
 
-    val naturalness: SearchNaturalnessDTO? = null,
+    val naturalnessQuery: NaturalnessQueryDTO? = null,
 
-    val mainDocument: SearchMainDocumentDTO? = null
+    val mainDocumentQuery: MainDocumentQueryDTO? = null
 )

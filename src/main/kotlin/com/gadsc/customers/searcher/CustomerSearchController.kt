@@ -1,6 +1,6 @@
 package com.gadsc.customers.searcher
 
-import com.gadsc.customers.searcher.dto.SearchCustomerDTO
+import com.gadsc.customers.searcher.query.dto.CustomerQueryDTO
 import com.gadsc.customers.searcher.service.CustomerSearchService
 import org.springframework.web.bind.annotation.*
 
@@ -13,6 +13,6 @@ class CustomerSearchController(
 //    fun create(@RequestBody product: CustomerSearch) = customerSearchService.createProduct(product)
 
     @PostMapping
-    fun search(@RequestBody searchCustomerDTO: SearchCustomerDTO) =
-        customerSearchService.findBy(searchCustomerDTO)
+    fun search(@RequestBody customerQueryDTO: CustomerQueryDTO) =
+        customerSearchService.findBy(customerQueryDTO)
 }
