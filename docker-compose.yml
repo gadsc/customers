@@ -10,12 +10,12 @@ services:
       - DEBUG=1
       - DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
-      - DATA_DIR=/tmp/localstack/data/customers
+      - DATA_DIR=/tmp/localstack/data
       - HOSTNAME_EXTERNAL=localstack
-      - SNS_WITH_SQS=customer-indexer
+      - SNS_WITH_SQS=customer-indexer,customer-remover
     volumes:
       - ./localstack_setup:/docker-entrypoint-initaws.d/
-      - /tmp/localstack/customers:/tmp/localstack
+      - /tmp/localstack:/tmp/localstack
       - '/var/run/docker.sock:/var/run/docker.sock'
 
   application:

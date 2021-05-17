@@ -34,4 +34,32 @@ class SearchableAddress(
             addressType = addressDTO.addressType
         )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SearchableAddress) return false
+
+        if (city != other.city) return false
+        if (state != other.state) return false
+        if (street != other.street) return false
+        if (zipcode != other.zipcode) return false
+        if (neighborhood != other.neighborhood) return false
+        if (complement != other.complement) return false
+        if (number != other.number) return false
+        if (addressType != other.addressType) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = city.hashCode()
+        result = 31 * result + state.hashCode()
+        result = 31 * result + street.hashCode()
+        result = 31 * result + zipcode.hashCode()
+        result = 31 * result + neighborhood.hashCode()
+        result = 31 * result + (complement?.hashCode() ?: 0)
+        result = 31 * result + number.hashCode()
+        result = 31 * result + addressType.hashCode()
+        return result
+    }
 }

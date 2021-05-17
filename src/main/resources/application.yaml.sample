@@ -23,10 +23,12 @@ aws:
     endpoint: http://localhost:4566
     topic:
       customer-indexer: arn:aws:sns:us-east-1:000000000000:customer-indexer
+      customer-remover: arn:aws:sns:us-east-1:000000000000:customer-remover
   sqs:
     endpoint: http://localhost:4566
     queue:
       customer-indexer: http://localhost:4566/000000000000/customer-indexer
+      customer-remover: http://localhost:4566/000000000000/customer-remover
 
 management:
   endpoints:

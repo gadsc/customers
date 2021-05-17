@@ -1,4 +1,4 @@
-package com.gadsc.customers.searcher.indexer
+package com.gadsc.customers.searcher.listener
 
 import com.gadsc.customers.api.dto.CustomerDTO
 import com.gadsc.customers.searcher.model.SearchableCustomer
@@ -17,6 +17,6 @@ class CustomerIndexerListener(
     fun listen(customerDTO: CustomerDTO) {
         logger.info("Consumed from sqs successfully $customerDTO")
 
-        customerSearchService.createCustomer(SearchableCustomer.from(customerDTO))
+        customerSearchService.createOrUpdateCustomer(SearchableCustomer.from(customerDTO))
     }
 }

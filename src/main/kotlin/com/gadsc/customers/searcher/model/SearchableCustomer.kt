@@ -1,6 +1,7 @@
 package com.gadsc.customers.searcher.model
 
 import com.gadsc.customers.api.dto.CustomerDTO
+import com.gadsc.customers.api.model.Customer
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.DateFormat
 import org.springframework.data.elasticsearch.annotations.Document
@@ -12,7 +13,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 
 object CustomerIndex {
-    const val INDEX_NAME = "customer_index_4"
+    const val INDEX_NAME = "customer_index"
 }
 
 @Document(indexName = CustomerIndex.INDEX_NAME)
@@ -56,10 +57,13 @@ class SearchableCustomer(
     val naturalness: SearchableNaturalness?,
 
     @Field(type = FieldType.Nested)
-    val mainDocument: SearchableMainDocument
+    val mainDocument: SearchableMainDocument,
+
+    val externalId: String
 ) {
     companion object {
         fun from(customerDTO: CustomerDTO): SearchableCustomer = SearchableCustomer(
+            externalId = customerDTO.id!!,
             name = customerDTO.name,
             email = customerDTO.email,
             jobTitle = customerDTO.jobTitle,
@@ -74,4 +78,23 @@ class SearchableCustomer(
             mainDocument = SearchableMainDocument.from(customerDTO.mainDocument)
         )
     }
+
+    fun update(customer: SearchableCustomer): SearchableCustomer = SearchableCustomer(
+        id = this.id,
+        name = customer.name,
+        email = customer.email,
+        jobTitle = customer.jobTitle,
+        civilStatus = customer.civilStatus,
+        birthdate = customer.birthdate,
+        motherFullName = customer.motherFullName,
+        fatherFullName = customer.fatherFullName,
+        politicallyExposed = customer.politicallyExposed,
+        createdAt = this.createdAt,
+        updatedAt = LocalDateTime.now(),
+        phones = this.phones + customer.phones,
+        addresses = this.addresses + customer.addresses,
+        naturalness = customer.naturalness,
+        mainDocument = customer.mainDocument,
+        externalId = this.externalId
+    )
 }

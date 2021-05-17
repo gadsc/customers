@@ -1,5 +1,6 @@
 package com.gadsc.customers.api.service
 
+import com.gadsc.customers.api.CustomerRemoverPublisher
 import com.gadsc.customers.api.CustomerIndexerPublisher
 import com.gadsc.customers.api.dto.CustomerDTO
 import com.gadsc.customers.api.exception.ResourceNotFoundException
@@ -12,18 +13,21 @@ import java.util.*
 @Service
 class CustomerService(
     private val customerRepository: CustomerRepository,
-    private val customerIndexerPublisher: CustomerIndexerPublisher
+    private val customerIndexerPublisher: CustomerIndexerPublisher,
+    private val customerRemoverPublisher: CustomerRemoverPublisher
 ) {
     fun create(customer: Customer): Customer =
         customerRepository.save(customer)
-            .apply { customerIndexerPublisher.publish(CustomerDTO.fromDomain(this)) }
+            .apply { customerIndexerPublisher.publish(CustomerDTO.toCommand(this)) }
 
     fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw ResourceNotFoundException("Customer not found")
 
     fun delete(id: UUID) {
         val customerToDelete = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
-        customerRepository.save(customerToDelete.logicalDelete())
+        customerRepository.save(customerToDelete.logicalDelete()).apply {
+            customerRemoverPublisher.publish(CustomerDTO.toCommand(this))
+        }
     }
 
     fun findAll(): List<Customer> = customerRepository.findAll().toList()
@@ -32,5 +36,6 @@ class CustomerService(
         val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
         return customerRepository.save(customerToUpdate.update(customer))
+            .apply { customerIndexerPublisher.publish(CustomerDTO.toCommand(this)) }
     }
 }
