@@ -13,17 +13,11 @@ else
     export DATASOURCE_URL = host.docker.internal
 endif
 
-local:
-	@$(MAKE) dev-down
-	@gradle clean assemble
-	@docker-compose up -d --build
-	docker logs customers --follow
-
 local-without-application: ## Executa local environment without application
 	@$(MAKE) dev-down
 	@docker-compose up -d postgres localstack elasticsearch
 	@sleep 3
-    docker exec -it customers_postgres psql -U postgres -X -c "create database customers_test"
+	docker exec -it customers_postgres psql -U postgres -X -c "create database customers_test"
 	@docker ps
 
 dev-down:  ## Destroy all dependencies
