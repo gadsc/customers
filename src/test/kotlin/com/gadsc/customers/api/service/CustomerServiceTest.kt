@@ -1,5 +1,7 @@
 package com.gadsc.customers.api.service
 
+import com.gadsc.customers.api.CustomerIndexerPublisher
+import com.gadsc.customers.api.CustomerRemoverPublisher
 import com.gadsc.customers.api.exception.ResourceNotFoundException
 import com.gadsc.customers.api.model.Customer
 import com.gadsc.customers.objectmothers.model.CustomerObjectMother
@@ -18,10 +20,16 @@ import java.util.*
 class CustomerServiceTest {
     private lateinit var subject: CustomerService
     private val customerRepository = mockk<CustomerRepository>(relaxed = true)
+    private val customerIndexerPublisher = mockk<CustomerIndexerPublisher>(relaxed = true)
+    private val customerRemoverPublisher = mockk<CustomerRemoverPublisher>(relaxed = true)
 
     @BeforeEach
     fun init() {
-        subject = CustomerService(customerRepository)
+        subject = CustomerService(
+            customerRepository = customerRepository,
+            customerIndexerPublisher = customerIndexerPublisher,
+            customerRemoverPublisher = customerRemoverPublisher
+        )
     }
 
     @Nested
@@ -35,6 +43,7 @@ class CustomerServiceTest {
             subject.create(customer)
 
             verify { customerRepository.save(customer) }
+            verify { customerIndexerPublisher.publish(any()) }
         }
     }
 
@@ -77,7 +86,7 @@ class CustomerServiceTest {
         fun `should delete customer`() {
             val customerId = UUID.randomUUID()
             val customer = mockk<Customer>()
-            val deletedCustomer = mockk<Customer>()
+            val deletedCustomer = mockk<Customer>(relaxed = true)
 
             every { customerRepository.findByIdOrNull(customerId) } returns customer
             every { customer.logicalDelete() } returns deletedCustomer
@@ -86,6 +95,7 @@ class CustomerServiceTest {
             subject.delete(customerId)
 
             verify { customerRepository.save(deletedCustomer) }
+            verify { customerRemoverPublisher.publish(any()) }
         }
 
         @Test
@@ -126,7 +136,7 @@ class CustomerServiceTest {
         fun `should update customer`() {
             val customerId = UUID.randomUUID()
             val customer = mockk<Customer>()
-            val updatedCustomer = mockk<Customer>()
+            val updatedCustomer = mockk<Customer>(relaxed = true)
 
             every { customerRepository.findByIdOrNull(customerId) } returns customer
             every { customer.update(updatedCustomer) } returns updatedCustomer
@@ -135,6 +145,7 @@ class CustomerServiceTest {
             subject.update(customerId, updatedCustomer)
 
             verify { customerRepository.save(updatedCustomer) }
+            verify { customerIndexerPublisher.publish(any()) }
         }
 
         @Test
