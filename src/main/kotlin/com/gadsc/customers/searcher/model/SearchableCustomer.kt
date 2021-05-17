@@ -1,5 +1,6 @@
 package com.gadsc.customers.searcher.model
 
+import com.gadsc.customers.api.dto.CustomerDTO
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.DateFormat
 import org.springframework.data.elasticsearch.annotations.Document
@@ -56,4 +57,21 @@ class SearchableCustomer(
 
     @Field(type = FieldType.Nested)
     val mainDocument: SearchableMainDocument
-)
+) {
+    companion object {
+        fun from(customerDTO: CustomerDTO): SearchableCustomer = SearchableCustomer(
+            name = customerDTO.name,
+            email = customerDTO.email,
+            jobTitle = customerDTO.jobTitle,
+            civilStatus = customerDTO.civilStatus.name,
+            birthdate = customerDTO.birthdate,
+            motherFullName = customerDTO.motherFullName,
+            fatherFullName = customerDTO.fatherFullName,
+            politicallyExposed = customerDTO.politicallyExposed,
+            phones = customerDTO.phones.map { SearchablePhone.from(it) }.toSet(),
+            addresses = customerDTO.addresses.map { SearchableAddress.from(it) }.toSet(),
+            naturalness = customerDTO.naturalness?.let { SearchableNaturalness.from(it) },
+            mainDocument = SearchableMainDocument.from(customerDTO.mainDocument)
+        )
+    }
+}
