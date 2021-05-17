@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.model.Naturalness
+import com.gadsc.customers.api.model.Naturalness
 
 object NaturalnessObjectMother {
     fun build(

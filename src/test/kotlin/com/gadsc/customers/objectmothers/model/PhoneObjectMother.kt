@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.model.Phone
+import com.gadsc.customers.api.model.Phone
 import java.util.UUID
 
 object PhoneObjectMother {

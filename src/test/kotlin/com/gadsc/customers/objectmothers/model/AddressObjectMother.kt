@@ -1,6 +1,6 @@
 package com.gadsc.customers.objectmothers.model
 
-import com.gadsc.customers.model.Address
+import com.gadsc.customers.api.model.Address
 import java.util.UUID
 
 object AddressObjectMother {
