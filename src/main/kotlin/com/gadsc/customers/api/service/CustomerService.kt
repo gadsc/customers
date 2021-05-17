@@ -18,7 +18,7 @@ class CustomerService(
 ) {
     fun create(customer: Customer): Customer =
         customerRepository.save(customer)
-            .apply { customerIndexerPublisher.publish(CustomerDTO.toCommand(this)) }
+            .apply { customerIndexerPublisher.publish(CustomerDTO.fromDomain(this)) }
 
     fun findById(id: UUID): Customer = customerRepository.findByIdOrNull(id) ?: throw ResourceNotFoundException("Customer not found")
 
@@ -26,7 +26,7 @@ class CustomerService(
         val customerToDelete = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
         customerRepository.save(customerToDelete.logicalDelete()).apply {
-            customerRemoverPublisher.publish(CustomerDTO.toCommand(this))
+            customerRemoverPublisher.publish(CustomerDTO.fromDomain(this))
         }
     }
 
@@ -36,6 +36,6 @@ class CustomerService(
         val customerToUpdate = customerRepository.findByIdOrNull(id)  ?: throw ResourceNotFoundException("Customer not found")
 
         return customerRepository.save(customerToUpdate.update(customer))
-            .apply { customerIndexerPublisher.publish(CustomerDTO.toCommand(this)) }
+            .apply { customerIndexerPublisher.publish(CustomerDTO.fromDomain(this)) }
     }
 }
