@@ -21,7 +21,7 @@ local:
 
 local-without-application: ## Executa local environment without application
 	@$(MAKE) dev-down
-	@docker-compose up -d postgres
+	@docker-compose up -d postgres localstack
 	@docker ps
 
 dev-down:  ## Destroy all dependencies

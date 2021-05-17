@@ -1,6 +1,23 @@
 version: '3.7'
 
 services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns,sqs
+      - DEBUG=1
+      - DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - DATA_DIR=/tmp/localstack/data/customers
+      - HOSTNAME_EXTERNAL=localstack
+      - SNS_WITH_SQS=customer-indexer
+    volumes:
+      - ./localstack_setup:/docker-entrypoint-initaws.d/
+      - /tmp/localstack/customers:/tmp/localstack
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
   application:
     build:
       context: .
@@ -12,6 +29,7 @@ services:
     init: true
     depends_on:
       - postgres
+      - localstack
     environment:
       DATASOURCE_URL: $DATASOURCE_URL
 
@@ -31,3 +49,4 @@ services:
 
 volumes:
   postgres:
+  localstack:
