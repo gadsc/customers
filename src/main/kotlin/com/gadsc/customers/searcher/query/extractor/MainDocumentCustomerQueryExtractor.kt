@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class MainDocumentCustomerQueryExtractor: CustomerQueryExtractor {
     override fun extract(customerQueryDTO: CustomerQueryDTO): QueryBuilder? =
-        customerQueryDTO.mainDocumentQuery?.let {
+        customerQueryDTO.mainDocument?.let {
             SearchCustomerQueryBuilder.instance("mainDocument")
                 .withField(it.mainDocumentType, "mainDocument.mainDocumentType")
                 .withField(it.code, "mainDocument.code")

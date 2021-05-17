@@ -26,11 +26,11 @@ class CustomerQueryDTO(
 
     val deletedAt: LocalDateTime? = null,
 
-    val phoneQuery: PhoneQueryDTO? = null,
+    val phone: PhoneQueryDTO? = null,
 
-    val addressQuery: AddressQueryDTO? = null,
+    val address: AddressQueryDTO? = null,
 
-    val naturalnessQuery: NaturalnessQueryDTO? = null,
+    val naturalness: NaturalnessQueryDTO? = null,
 
-    val mainDocumentQuery: MainDocumentQueryDTO? = null
+    val mainDocument: MainDocumentQueryDTO? = null
 )

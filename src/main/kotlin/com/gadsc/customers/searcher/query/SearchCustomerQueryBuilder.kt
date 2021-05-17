@@ -1,6 +1,7 @@
 package com.gadsc.customers.searcher.query
 
 import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.MatchQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -14,7 +15,7 @@ class SearchCustomerQueryBuilder private constructor(private val nestedPath: Str
     private val searchQuery = QueryBuilders.boolQuery()
 
     fun build(): QueryBuilder? =
-        if (searchQuery.hasClauses()) nestedPath?.let { QueryBuilders.nestedQuery(it, searchQuery, ScoreMode.None) } ?: searchQuery
+        if (searchQuery.hasClauses()) nestedPath?.let { QueryBuilders.nestedQuery(nestedPath, searchQuery, ScoreMode.None) } ?: searchQuery
         else null
 
 
@@ -26,9 +27,20 @@ class SearchCustomerQueryBuilder private constructor(private val nestedPath: Str
         return this
     }
 
-    fun withCustomQuery(field: String?, matchQueryBuilder: MatchQueryBuilder): SearchCustomerQueryBuilder {
+    fun withBooleanField(field: Boolean?, name: String): SearchCustomerQueryBuilder {
+        field?.let {
+            searchQuery.must(QueryBuilders.matchQuery(name, it))
+        }
+
+        return this
+    }
+
+    fun withFuzzinessQuery(field: String?, name: String): SearchCustomerQueryBuilder {
         field?.let{
-            searchQuery.must(matchQueryBuilder)
+            searchQuery.must(QueryBuilders.matchQuery(name, it)
+                .fuzziness(Fuzziness.ONE)
+                .minimumShouldMatch("65%")
+                .prefixLength(3))
         }
 
         return this

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class AddressCustomerQueryExtractor: CustomerQueryExtractor {
     override fun extract(customerQueryDTO: CustomerQueryDTO): QueryBuilder? =
-        customerQueryDTO.addressQuery?.let {
+        customerQueryDTO.address?.let {
             SearchCustomerQueryBuilder.instance("addresses")
                 .withField(it.city, "addresses.city")
                 .withField(it.state, "addresses.state")

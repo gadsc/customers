@@ -4,6 +4,7 @@ import com.gadsc.customers.searcher.model.SearchableCustomer
 import com.gadsc.customers.searcher.query.extractor.CustomerQueryExtractor
 import com.gadsc.customers.searcher.repository.CustomerSearchRepository
 import com.gadsc.customers.searcher.query.dto.CustomerQueryDTO
+import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
 import org.springframework.stereotype.Service
@@ -15,18 +16,17 @@ class CustomerSearchService(
     private val elasticsearchOperations: ElasticsearchOperations,
     private val customerQueryExtractors: List<CustomerQueryExtractor>
 ) {
-    fun createProduct(product: SearchableCustomer) = customerSearchRepository.save(product)
+    fun createCustomer(customer: SearchableCustomer) = customerSearchRepository.save(customer)
 
     fun findBy(customerQueryDTO: CustomerQueryDTO): List<SearchableCustomer> {
-        val nativeSearchQueryBuilder = NativeSearchQueryBuilder()
+        val boolQuery = QueryBuilders.boolQuery()
 
-        customerQueryExtractors.mapNotNull { it.extract(customerQueryDTO) }
-            .forEach {
-                nativeSearchQueryBuilder.withQuery(it)
-            }
+        customerQueryExtractors
+            .mapNotNull { it.extract(customerQueryDTO) }
+            .forEach { boolQuery.must(it) }
 
         return elasticsearchOperations
-            .search(nativeSearchQueryBuilder.build(), SearchableCustomer::class.java)
+            .search(NativeSearchQueryBuilder().withQuery(boolQuery).build(), SearchableCustomer::class.java)
             .map { it.content }
             .toList()
     }

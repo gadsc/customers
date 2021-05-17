@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class NaturalnessCustomerQueryExtractor: CustomerQueryExtractor {
     override fun extract(customerQueryDTO: CustomerQueryDTO): QueryBuilder? =
-        customerQueryDTO.naturalnessQuery?.let {
+        customerQueryDTO.naturalness?.let {
             SearchCustomerQueryBuilder.instance("naturalness")
                 .withField(it.cityOfBirth, "naturalness.cityOfBirth")
                 .withField(it.stateOfBirth, "naturalness.stateOfBirth")
